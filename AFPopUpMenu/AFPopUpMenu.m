@@ -41,7 +41,7 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
 
 - (CGSize)sizeWithFont:(UIFont *)font maxSize:(CGSize)maxSize {
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:self
-                                                                         attributes:@{NSFontAttributeName: font}];
+                                                                         attributes:@{NSFontAttributeName:font}];
     
     return [attributedText boundingRectWithSize:maxSize
                                         options:NSStringDrawingUsesLineFragmentOrigin
@@ -77,21 +77,21 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
         self.interval = 10;
         self.animationDuration = .3;
         self.menuTitleFont = [UIFont systemFontOfSize:12.f];
-        self.menuTitleColor = [UIColor lightGrayColor];
+        self.menuTitleColor = [UIColor darkGrayColor];
         self.menuTitleAlignment = NSTextAlignmentCenter;
         self.showSeparator = YES;
         self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:.3];
-        self.separatorColor = [UIColor colorWithRed:196/255.f green:196/255.f blue:196/255.f alpha:1];
+        self.separatorColor = [UIColor colorWithRed:210/255.f green:210/255.f blue:210/255.f alpha:1];
         self.exitText = @"取消";
         self.exitTextColor = [UIColor darkGrayColor];
-        self.exitTextFont = [UIFont systemFontOfSize:14];
+        self.exitTextFont = [UIFont systemFontOfSize:15.f];
         self.showScrollIndicator = NO;
         self.contentInset = UIEdgeInsetsMake(0, 10, 0, 10);
-        self.itemSize = CGSizeMake(70, 100);
-        self.minimumLineSpacing = 4;
+        self.itemSize = CGSizeMake(70, 110);
+        self.minimumLineSpacing = 5;
         self.minimumInteritemSpacing = 0;
         self.itemTextFont = [UIFont systemFontOfSize:11.f];
-        self.itemTextColor = [UIColor lightGrayColor];
+        self.itemTextColor = [UIColor darkGrayColor];
         self.itemMargin = 5;
         self.usingSpringAnimation = NO;
         self.springWithDamping = 0.6;
@@ -257,8 +257,9 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
 - (UILabel *)menuNameLabel {
     if (_menuNameLabel == nil) {
         UILabel *menuNameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+//        menuNameLabel.backgroundColor = [UIColor orangeColor];
         menuNameLabel.textAlignment = NSTextAlignmentCenter;
-        menuNameLabel.numberOfLines = 0;
+        menuNameLabel.numberOfLines = 2;
         menuNameLabel.font = [AFPopUpMenuConfiguration defaultConfiguration].itemTextFont;
         menuNameLabel.textColor = [AFPopUpMenuConfiguration defaultConfiguration].itemTextColor;
         _menuNameLabel = menuNameLabel;
@@ -288,6 +289,8 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
 @property (nonatomic, strong) UIButton *exitButton;
 @property (nonatomic, strong) UICollectionView *upsideCollectionView;
 @property (nonatomic, strong) UICollectionView *bottomCollectionView;
+
+@property (nonatomic, assign) BOOL showMenuTitle;
 @property (nonatomic, assign) NSUInteger popUpMenuSection;
 
 @end
@@ -371,10 +374,13 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
     _doneBlock = doneBlock;
     
     [self addSubview:self.visualEffectView];
-    [self.visualEffectView addSubview:self.titleLabel];
+    
+    if (self.showMenuTitle) { [self.visualEffectView addSubview:self.titleLabel]; }
     [self.visualEffectView addSubview:self.upsideCollectionView];
-    [self.visualEffectView addSubview:self.seperator];
-    [self.visualEffectView addSubview:self.bottomCollectionView];
+    if (self.popUpMenuSection == 2) {
+        [self.visualEffectView addSubview:self.seperator];
+        [self.visualEffectView addSubview:self.bottomCollectionView];
+    }
     [self.visualEffectView addSubview:self.exitButton];
     
     [self shouldUpdateMenuViewFrame];
@@ -382,11 +388,14 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
 
 - (void)shouldUpdateMenuViewFrame {
     self.frame = [AFPopUpMenuFrameFactory sharedFactory].menuFrame;
+    
     self.visualEffectView.frame = self.bounds;
-    self.titleLabel.frame = [AFPopUpMenuFrameFactory sharedFactory].titleLabelFrame;
+    if (self.showMenuTitle) { self.titleLabel.frame = [AFPopUpMenuFrameFactory sharedFactory].titleLabelFrame; }
     self.upsideCollectionView.frame = [AFPopUpMenuFrameFactory sharedFactory].upsideCollectionViewFrame;
-    self.seperator.frame = [AFPopUpMenuFrameFactory sharedFactory].separatorFrame;
-    self.bottomCollectionView.frame = [AFPopUpMenuFrameFactory sharedFactory].bottomCollectionViewFrame;
+    if (self.popUpMenuSection == 2) {
+        self.seperator.frame = [AFPopUpMenuFrameFactory sharedFactory].separatorFrame;
+        self.bottomCollectionView.frame = [AFPopUpMenuFrameFactory sharedFactory].bottomCollectionViewFrame;
+    }
     self.exitButton.frame = [AFPopUpMenuFrameFactory sharedFactory].exitButtonFrame;
 }
 
@@ -396,13 +405,20 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
 
 #pragma mark - Methods (Private)
 
+- (BOOL)showMenuTitle {
+    return self.title.length > 0;
+}
+
 - (NSUInteger)popUpMenuSection {
     return self.menuArray.count;
 }
 
+#pragma mark - Methods (Lazy Load)
+
 - (UILabel *)titleLabel {
     if (_titleLabel == nil) {
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+//        titleLabel.backgroundColor = [UIColor orangeColor];
         titleLabel.text = self.title;
         titleLabel.numberOfLines = 0;
         titleLabel.font = [AFPopUpMenuConfiguration defaultConfiguration].menuTitleFont;
@@ -668,14 +684,18 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
             [self.popMenuView removeFromSuperview];
             [self.backgroundView removeFromSuperview];
             
+            if ([selectedIndexPath isEqual:AFPopUpMenuCancelSelectedIndexPath]) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    !self.dismissBlock ?: self.dismissBlock();
+                });
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    !self.doneBlock ?: self.doneBlock(selectedIndexPath);
+                });
+            }
+            
             self.popMenuView = nil;
             self.backgroundView = nil;
-            
-            if (selectedIndexPath.length <= 0) {
-                !self.doneBlock ?: self.doneBlock(nil);
-            } else {
-                !self.doneBlock ?: self.doneBlock(selectedIndexPath);
-            }
         }
     }];
 }

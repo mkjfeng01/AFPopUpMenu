@@ -20,31 +20,35 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface AFPopUpMenuConfiguration : NSObject
 
-@property (nonatomic, assign) CGFloat margin;
-@property (nonatomic, assign) CGFloat interval;
-@property (nonatomic, assign) NSTimeInterval animationDuration;
-@property (nonatomic, strong) UIFont *menuTitleFont;
-@property (nonatomic, strong) UIColor *menuTitleColor;
-@property (nonatomic, strong) UIColor *backgroundColor;
-@property (nonatomic, assign) NSTextAlignment menuTitleAlignment;
-@property (nonatomic, copy) NSString *exitText;
-@property (nonatomic, strong) UIColor *exitTextColor;
-@property (nonatomic, strong) UIFont *exitTextFont;
-@property (nonatomic, assign) BOOL showSeparator;
-@property (nonatomic, strong) UIColor *separatorColor;
-@property (nonatomic, assign) BOOL showScrollIndicator;
-@property (nonatomic, assign) UIEdgeInsets contentInset;
-@property (nonatomic, assign) CGSize itemSize;
-@property (nonatomic, assign) CGFloat minimumLineSpacing;
-@property (nonatomic, assign) CGFloat minimumInteritemSpacing;
-@property (nonatomic, strong) UIFont *itemTextFont;
-@property (nonatomic, strong) UIColor *itemTextColor;
-@property (nonatomic, assign) CGFloat itemMargin;
-@property (nonatomic, assign) BOOL usingSpringAnimation;
-@property (nonatomic, assign) CGFloat springWithDamping;
-@property (nonatomic, assign) CGFloat springVelocity;
+@property (nonatomic, assign) CGFloat margin; /* titleLabel margin, default is 15. */
+@property (nonatomic, assign) CGFloat interval; /* upsideCollectionView/bottomCollectionView/seperator/exitButton top distance to it`s top view. */
+@property (nonatomic, assign) NSTimeInterval animationDuration; /*  */
+@property (nonatomic, strong) UIFont *menuTitleFont; /*  */
+@property (nonatomic, strong) UIColor *menuTitleColor; /*  */
+@property (nonatomic, strong) UIColor *backgroundColor; /*  */
+@property (nonatomic, assign) NSTextAlignment menuTitleAlignment; /*  */
+@property (nonatomic, copy) NSString *exitText; /*  */
+@property (nonatomic, strong) UIColor *exitTextColor; /*  */
+@property (nonatomic, strong) UIFont *exitTextFont; /*  */
+@property (nonatomic, assign) BOOL showSeparator; /*  */
+@property (nonatomic, strong) UIColor *separatorColor; /*  */
+@property (nonatomic, assign) BOOL showScrollIndicator; /*  */
+@property (nonatomic, assign) UIEdgeInsets contentInset; /*  */
+@property (nonatomic, assign) CGSize itemSize; /*  */
+@property (nonatomic, assign) CGFloat minimumLineSpacing; /*  */
+@property (nonatomic, assign) CGFloat minimumInteritemSpacing; /*  */
+@property (nonatomic, strong) UIFont *itemTextFont; /*  */
+@property (nonatomic, strong) UIColor *itemTextColor; /*  */
+@property (nonatomic, assign) CGFloat itemMargin; /*  */
+@property (nonatomic, assign) BOOL usingSpringAnimation; /*  */
+@property (nonatomic, assign) CGFloat springWithDamping; /*  */
+@property (nonatomic, assign) CGFloat springVelocity; /*  */
+
++ (AFPopUpMenuConfiguration *)defaultConfiguration;
 
 @end
 
@@ -57,12 +61,14 @@ typedef void (^AFPopUpMenuVoidBlock) (NSString *title);
 + (void)showWithMenuArray:(NSArray *)menuArray
                imageArray:(NSArray *)imageArray
                 doneBlock:(AFPopUpMenuDoneBlock)doneBlock
-             dismissBlock:(AFPopUpMenuDismissBlock)dismissBlock;
+             dismissBlock:(nullable AFPopUpMenuDismissBlock)dismissBlock;
 
-+ (void)showWithTitle:(NSString *)title
++ (void)showWithTitle:(nullable NSString *)title
             menuArray:(NSArray *)menuArray
            imageArray:(NSArray *)imageArray
             doneBlock:(AFPopUpMenuDoneBlock)doneBlock
-         dismissBlock:(AFPopUpMenuDismissBlock)dismissBlock;
+         dismissBlock:(nullable AFPopUpMenuDismissBlock)dismissBlock;
 
 @end
+
+NS_ASSUME_NONNULL_END
