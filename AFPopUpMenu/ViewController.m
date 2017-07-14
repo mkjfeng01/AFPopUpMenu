@@ -36,7 +36,7 @@
     
     NSString *title = @"请选择你要进行的操作";
     NSArray *singleTitleArray = @[
-                                  @[@"联系人",@"转发", @"朋友圈", @"收藏", @"QQ控件", @"短信", @"分享到FaceBook", @"分享到Twitter", @"购物车", @"微信读书"]
+                                  @[@"联系人",@"转发", @"朋友圈", @"收藏", @"QQ空间", @"短信", @"分享到FaceBook", @"分享到Twitter", @"购物车", @"微信读书"]
                                   ];
     NSArray *singleImageArray = @[
                                   @[@"Action_Verified", @"Action_Share", @"Action_Moments", @"Action_MyFavAdd", @"Action_qzone", @"Action_Email", @"Action_facebook",@"Action_Twitter", @"Action_JD_cart", @"Action_WeRead"]
