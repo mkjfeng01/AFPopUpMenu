@@ -24,29 +24,29 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AFPopUpMenuConfiguration : NSObject
 
-@property (nonatomic, assign) CGFloat margin; /* titleLabel margin, default is 15. */
-@property (nonatomic, assign) CGFloat interval; /* upsideCollectionView/bottomCollectionView/seperator/exitButton top distance to it`s top view. */
-@property (nonatomic, assign) NSTimeInterval animationDuration; /*  */
-@property (nonatomic, strong) UIFont *menuTitleFont; /*  */
-@property (nonatomic, strong) UIColor *menuTitleColor; /*  */
-@property (nonatomic, strong) UIColor *backgroundColor; /*  */
-@property (nonatomic, assign) NSTextAlignment menuTitleAlignment; /*  */
-@property (nonatomic, copy) NSString *exitText; /*  */
-@property (nonatomic, strong) UIColor *exitTextColor; /*  */
-@property (nonatomic, strong) UIFont *exitTextFont; /*  */
-@property (nonatomic, assign) BOOL showSeparator; /*  */
-@property (nonatomic, strong) UIColor *separatorColor; /*  */
-@property (nonatomic, assign) BOOL showScrollIndicator; /*  */
+@property (nonatomic, assign) CGFloat margin; /* 标题控件距离屏幕左右边距 */
+@property (nonatomic, assign) CGFloat interval; /* 控件之间上下边距 */
+@property (nonatomic, assign) NSTimeInterval animationDuration; /* 菜单出现/消失动画执行时间 */
+@property (nonatomic, strong) UIFont *menuTitleFont; /* 菜单标题字体，默认系统字体12号 */
+@property (nonatomic, strong) UIColor *menuTitleColor; /* 菜单标题字体颜色，默认深灰色(darkGray) */
+@property (nonatomic, strong) UIColor *backgroundColor; /* 菜单整体背景色 */
+@property (nonatomic, assign) NSTextAlignment menuTitleAlignment; /* 菜单标题文字对齐方式，默认居中对齐 */
+@property (nonatomic, copy) NSString *exitText; /* 底部退出按钮标题，默认`取消` */
+@property (nonatomic, strong) UIColor *exitTextColor; /* 底部退出按钮标题颜色，默认深灰色 */
+@property (nonatomic, strong) UIFont *exitTextFont; /* 底部退出按钮字体大小，默认系统字体15号 */
+@property (nonatomic, assign) BOOL showSeparator; /* 是否显示上下分组之间的分割线 */
+@property (nonatomic, strong) UIColor *separatorColor; /* 如果显示分割线，分割线颜色 */
+@property (nonatomic, assign) BOOL showScrollIndicator; /* 上下分组是否显示每个分组底部的滚动条 */
 @property (nonatomic, assign) UIEdgeInsets contentInset; /*  */
-@property (nonatomic, assign) CGSize itemSize; /*  */
+@property (nonatomic, assign) CGSize itemSize; /* 分组cell的大小 */
 @property (nonatomic, assign) CGFloat minimumLineSpacing; /*  */
 @property (nonatomic, assign) CGFloat minimumInteritemSpacing; /*  */
-@property (nonatomic, strong) UIFont *itemTextFont; /*  */
-@property (nonatomic, strong) UIColor *itemTextColor; /*  */
+@property (nonatomic, strong) UIFont *itemTextFont; /* 分组标题字体，默认系统字体11号 */
+@property (nonatomic, strong) UIColor *itemTextColor; /* 分组标题字体颜色，默认深灰色(darkGray) */
 @property (nonatomic, assign) CGFloat itemMargin; /*  */
-@property (nonatomic, assign) BOOL usingSpringAnimation; /*  */
-@property (nonatomic, assign) CGFloat springWithDamping; /*  */
-@property (nonatomic, assign) CGFloat springVelocity; /*  */
+@property (nonatomic, assign) BOOL usingSpringAnimation; /* 菜单弹出时时是否使用弹簧动画 */
+@property (nonatomic, assign) CGFloat springWithDamping; /* with spring-style springWithDamping, default is 0.7 */
+@property (nonatomic, assign) CGFloat springVelocity; /* with spring-style springVelocity, default is 0.3 */
 
 + (AFPopUpMenuConfiguration *)defaultConfiguration;
 
