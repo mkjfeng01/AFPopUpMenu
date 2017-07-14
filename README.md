@@ -11,12 +11,12 @@
 #import "AFPopUpMenu.h"
 
 [AFPopUpMenu showWithTitle:title
-                     menuArray:titleArray
-                    imageArray:imageArray
-                     doneBlock:^(NSIndexPath * _Nonnull selectedIndexPath) {
+                 menuArray:titleArray
+                imageArray:imageArray
+                 doneBlock:^(NSIndexPath * _Nonnull selectedIndexPath) {
         // do something..
     }
-                  dismissBlock:^{
+              dismissBlock:^{
         // do something..
     }];
 ```
