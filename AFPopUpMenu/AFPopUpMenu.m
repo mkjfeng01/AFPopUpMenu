@@ -94,8 +94,8 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
         self.itemTextColor = [UIColor darkGrayColor];
         self.itemMargin = 5;
         self.usingSpringAnimation = NO;
-        self.springWithDamping = 0.6;
-        self.springVelocity = 0.5;
+        self.springWithDamping = 0.7;
+        self.springVelocity = 0.3;
     }
     return self;
 }
