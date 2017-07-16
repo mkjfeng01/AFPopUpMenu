@@ -1,0 +1,6 @@
+framework module AFPopUpMenu {
+  umbrella header "AFPopUpMenu-umbrella.h"
+
+  export *
+  module * { export * }
+}
