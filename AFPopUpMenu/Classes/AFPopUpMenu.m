@@ -189,15 +189,15 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
 - (void)getImageWithResource:(id)resource completion:(void (^)(UIImage *image))completion {
     if ([resource isKindOfClass:[UIImage class]]) {
         completion(resource);
-    }else if ([resource isKindOfClass:[NSString class]]) {
+    } else if ([resource isKindOfClass:[NSString class]]) {
         if ([resource hasPrefix:@"http"]) {
             [self downloadImageWithURL:[NSURL URLWithString:resource] completion:completion];
-        }else{
+        } else {
             completion([UIImage imageNamed:resource]);
         }
-    }else if ([resource isKindOfClass:[NSURL class]]) {
+    } else if ([resource isKindOfClass:[NSURL class]]) {
         [self downloadImageWithURL:resource completion:completion];
-    }else{
+    } else {
         NSLog(@"Image resource not recougnized.");
         completion(nil);
     }
@@ -207,7 +207,7 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
     if ([self isExitImageForImageURL:url]) {
         NSString *filePath = [self filePathForImageURL:url];
         completion([UIImage imageWithContentsOfFile:filePath]);
-    }else{
+    } else {
         // download
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
@@ -257,7 +257,6 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
 - (UILabel *)menuNameLabel {
     if (_menuNameLabel == nil) {
         UILabel *menuNameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-//        menuNameLabel.backgroundColor = [UIColor orangeColor];
         menuNameLabel.textAlignment = NSTextAlignmentCenter;
         menuNameLabel.numberOfLines = 2;
         menuNameLabel.font = [AFPopUpMenuConfiguration defaultConfiguration].itemTextFont;
@@ -320,7 +319,6 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
     AFPopUpMenuCell *cell = [AFPopUpMenuCell dequeueReusableCellWithCollectionView:collectionView reuseIdentifier:AFPopUpMenuCellIdentifier indexPath:indexPath];
     
     if (self.popUpMenuSection == 2) {
-        
         if (collectionView == self.upsideCollectionView) {
             menuTitle = self.menuArray[0][indexPath.row];
             menuImage = self.menuImageArray[0][indexPath.row];
@@ -420,7 +418,6 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
 - (UILabel *)titleLabel {
     if (_titleLabel == nil) {
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-//        titleLabel.backgroundColor = [UIColor orangeColor];
         titleLabel.text = self.title;
         titleLabel.numberOfLines = 0;
         titleLabel.font = [AFPopUpMenuConfiguration defaultConfiguration].menuTitleFont;
