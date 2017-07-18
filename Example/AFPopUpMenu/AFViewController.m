@@ -57,9 +57,7 @@
     if (indexPath.section == 0) {
         [AFPopUpMenuConfiguration defaultConfiguration].usingSpringAnimation = NO;
         
-        if (indexPath.row == 0) {
-            
-        } else if (indexPath.row == 1) {
+        if (indexPath.row == 1) {
             title = nil;
         } else if (indexPath.row == 2) {
             titleArray = singleTitleArray;
@@ -68,16 +66,13 @@
     } else {
         [AFPopUpMenuConfiguration defaultConfiguration].usingSpringAnimation = YES;
         
-        if (indexPath.row == 0) {
-        } else if (indexPath.row == 1) {
+        if (indexPath.row == 1) {
             title = nil;
         } else if (indexPath.row == 2) {
             titleArray = singleTitleArray;
             imageArray = singleImageArray;
         }
     }
-    
-    
     
     [AFPopUpMenu showWithTitle:title
                      menuArray:titleArray
@@ -107,6 +102,5 @@
                       NSLog(@"dismiss");
                   }];
 }
-
 
 @end

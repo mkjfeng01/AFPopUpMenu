@@ -1,4 +1,6 @@
-//Copyright © 2017 <https://github.com/mkjfeng01>
+// The MIT License (MIT)
+//
+// Copyright © 2017 mkjfeng01 <https://github.com/mkjfeng01>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -143,7 +145,7 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
 
 @property (nonatomic, strong) UIButton *iconImageButton;
 @property (nonatomic, strong) UILabel *menuNameLabel;
-@property (nonatomic, copy) AFPopUpMenuVoidBlock doneBlock;
+@property (nonatomic, copy) AFPopUpMenuHitBlock doneBlock;
 
 @end
 
@@ -165,20 +167,12 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
     CGFloat itemWidth = [AFPopUpMenuConfiguration defaultConfiguration].itemSize.width;
     CGFloat itemHeight = [AFPopUpMenuConfiguration defaultConfiguration].itemSize.height;
     
-    CGSize maxSize = CGSizeMake(itemWidth - 2*margin,
-                                itemHeight - (interval + itemWidth - margin*2));
-
+    CGSize maxSize = CGSizeMake(itemWidth - 2*margin, itemHeight - (interval + itemWidth - margin*2));
     CGSize size = [menuName sizeWithFont:[AFPopUpMenuConfiguration defaultConfiguration].itemTextFont
                                  maxSize:maxSize];
-    self.menuNameLabel.frame = CGRectMake(margin,
-                                          interval + (itemWidth - margin*2) + margin,
-                                          itemWidth - margin*2,
-                                          size.height);
+    self.menuNameLabel.frame = CGRectMake(margin, interval + (itemWidth - margin*2) + margin, itemWidth - margin*2, size.height);
     
-    CGRect rect = CGRectMake(margin,
-                             interval,
-                             CGRectGetWidth(self.menuNameLabel.frame),
-                             itemWidth - margin*2);
+    CGRect rect = CGRectMake(margin, interval, CGRectGetWidth(self.menuNameLabel.frame), itemWidth - margin*2);
     [self.iconImageButton setFrame:rect];
     
     [self getImageWithResource:menuImage completion:^(UIImage *image) {
@@ -269,6 +263,23 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
 @end
 
 
+#pragma mark - AFPopUpMenuConfiguration
+///=============================================================================
+/// @name AFPopUpMenuConfiguration
+///=============================================================================
+
+@interface AFPopUpMenuCollectionView : UICollectionView <NSCopying>
+
+@end
+
+@implementation AFPopUpMenuCollectionView
+
+- (id)copyWithZone:(NSZone *)zone {
+    return self;
+}
+
+@end
+
 #pragma mark - AFPopUpMenuView
 ///=============================================================================
 /// @name AFPopUpMenuView
@@ -277,7 +288,7 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
 @interface AFPopUpMenuView : UIView <UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (nonatomic, copy) NSString *title;
-@property (nonatomic, strong) NSArray *menuArray;
+@property (nonatomic, strong) NSArray *menuTitleArray;
 @property (nonatomic, strong) NSArray *menuImageArray;
 @property (nonatomic, copy) AFPopUpMenuDoneBlock doneBlock;
 
@@ -286,11 +297,12 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
 @property (nonatomic, strong) UIView *backgroundView;
 @property (nonatomic, strong) UIView *seperator;
 @property (nonatomic, strong) UIButton *exitButton;
-@property (nonatomic, strong) UICollectionView *upsideCollectionView;
-@property (nonatomic, strong) UICollectionView *bottomCollectionView;
+@property (nonatomic, strong) AFPopUpMenuCollectionView *upsideCollectionView;
+@property (nonatomic, strong) AFPopUpMenuCollectionView *bottomCollectionView;
 
 @property (nonatomic, assign) BOOL showMenuTitle;
 @property (nonatomic, assign) NSUInteger popUpMenuSection;
+@property (nonatomic, strong) NSMutableDictionary <id, NSNumber *> *mutableContentViewForIndexPathStore;
 
 @end
 
@@ -301,15 +313,12 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    if (self.popUpMenuSection == 2) {
-        if (collectionView == self.upsideCollectionView) return [self.menuArray[0] count];
-        if (collectionView == self.bottomCollectionView) return [self.menuArray[1] count];
-    }
-    if (self.popUpMenuSection == 1) {
-        return [[self.menuArray firstObject] count];
-    }
-    
-    return 0;
+    NSInteger index = [self cachedStoreSectionForKey:collectionView];
+    return [self.menuTitleArray[index] count];
+}
+
+- (NSUInteger)popUpMenuSection {
+    return self.menuTitleArray.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -318,48 +327,14 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
     
     AFPopUpMenuCell *cell = [AFPopUpMenuCell dequeueReusableCellWithCollectionView:collectionView reuseIdentifier:AFPopUpMenuCellIdentifier indexPath:indexPath];
     
-    if (self.popUpMenuSection == 2) {
-        if (collectionView == self.upsideCollectionView) {
-            menuTitle = self.menuArray[0][indexPath.row];
-            menuImage = self.menuImageArray[0][indexPath.row];
-        }
-        if (collectionView == self.bottomCollectionView) {
-            menuTitle = self.menuArray[1][indexPath.row];
-            menuImage = self.menuImageArray[1][indexPath.row];
-        }
-        
-    } else if (self.popUpMenuSection == 1) {
-        if (collectionView == self.upsideCollectionView) {
-            menuTitle = self.menuArray[0][indexPath.row];
-            menuImage = self.menuImageArray[0][indexPath.row];
-        }
-    }
+    NSUInteger section = [self cachedStoreSectionForKey:collectionView];
+    menuTitle = self.menuTitleArray[section][indexPath.row];
+    menuImage = self.menuImageArray[section][indexPath.row];
     
     __weak __typeof(self) weakSelf = self;
     cell.doneBlock = ^(NSString *title){
-        NSLog(@"%@", title);
-        
-        // TODO:优化
-        
-        NSIndexPath *indexPath;
-        
-        if (self.popUpMenuSection == 2) {
-            if (collectionView == self.upsideCollectionView) {
-                NSInteger row = [self.menuArray[0] indexOfObject:title];
-                indexPath = [NSIndexPath indexPathForRow:row inSection:0];
-            }
-            if (collectionView == self.bottomCollectionView) {
-                NSInteger row = [self.menuArray[1] indexOfObject:title];
-                indexPath = [NSIndexPath indexPathForRow:row inSection:1];
-            }
-        } else if (self.popUpMenuSection == 1) {
-            if (collectionView == self.upsideCollectionView) {
-                NSInteger row = [self.menuArray[0] indexOfObject:title];
-                indexPath = [NSIndexPath indexPathForRow:row inSection:0];
-            }
-        }
-        
-        !weakSelf.doneBlock ?: weakSelf.doneBlock(indexPath);
+        NSInteger row = [self.menuTitleArray[section] indexOfObject:title];
+        !weakSelf.doneBlock ?: weakSelf.doneBlock([NSIndexPath indexPathForRow:row inSection:section]);
     };
     
     [cell setupWithMenuName:menuTitle menuImage:menuImage];
@@ -369,17 +344,22 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
 
 - (void)popUpMenuWithTitle:(NSString *)title menuArray:(NSArray *)menuArray menuImageArray:(NSArray *)menuImageArray doneBlock:(AFPopUpMenuDoneBlock)doneBlock {
     _title = title;
-    _menuArray = menuArray;
+    _menuTitleArray = menuArray;
     _menuImageArray = menuImageArray;
     _doneBlock = doneBlock;
+    _mutableContentViewForIndexPathStore = [NSMutableDictionary dictionary];
     
     [self addSubview:self.visualEffectView];
     
     if (self.showMenuTitle) { [self.visualEffectView addSubview:self.titleLabel]; }
     [self.visualEffectView addSubview:self.upsideCollectionView];
+    
+    self.mutableContentViewForIndexPathStore[self.upsideCollectionView] = @(0);
+    
     if (self.popUpMenuSection == 2) {
         [self.visualEffectView addSubview:self.seperator];
         [self.visualEffectView addSubview:self.bottomCollectionView];
+        self.mutableContentViewForIndexPathStore[self.bottomCollectionView] = @(1);
     }
     [self.visualEffectView addSubview:self.exitButton];
     
@@ -409,8 +389,12 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
     return self.title.length > 0;
 }
 
-- (NSUInteger)popUpMenuSection {
-    return self.menuArray.count;
+- (NSUInteger)cachedStoreSectionForKey:(id)key {
+    if (!key) {
+        return 0;
+    }
+    
+    return [self.mutableContentViewForIndexPathStore[key] unsignedIntegerValue];
 }
 
 #pragma mark - Methods (Lazy Load)
@@ -447,10 +431,18 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
     return flowLayout;
 }
 
-- (UICollectionView *)upsideCollectionView {
+- (UIView *)seperator {
+    if (_seperator == nil) {
+        UIView *seperator = [[UIView alloc] initWithFrame:CGRectZero];
+        seperator.backgroundColor = [AFPopUpMenuConfiguration defaultConfiguration].separatorColor;
+        _seperator = seperator;
+    }
+    return _seperator;
+}
+
+- (AFPopUpMenuCollectionView *)upsideCollectionView {
     if (_upsideCollectionView == nil) {
-        UICollectionView *upsideCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
-                                                                    collectionViewLayout:[self flowLayout]];
+        AFPopUpMenuCollectionView *upsideCollectionView = [[AFPopUpMenuCollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:[self flowLayout]];
         upsideCollectionView.backgroundColor = [UIColor clearColor];
         upsideCollectionView.showsHorizontalScrollIndicator = [AFPopUpMenuConfiguration defaultConfiguration].showScrollIndicator;
         upsideCollectionView.contentInset = [AFPopUpMenuConfiguration defaultConfiguration].contentInset;
@@ -462,19 +454,9 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
     return _upsideCollectionView;
 }
 
-- (UIView *)seperator {
-    if (_seperator == nil) {
-        UIView *seperator = [[UIView alloc] initWithFrame:CGRectZero];
-        seperator.backgroundColor = [AFPopUpMenuConfiguration defaultConfiguration].separatorColor;
-        _seperator = seperator;
-    }
-    return _seperator;
-}
-
-- (UICollectionView *)bottomCollectionView {
+- (AFPopUpMenuCollectionView *)bottomCollectionView {
     if (_bottomCollectionView == nil) {
-        UICollectionView *bottomCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
-                                                                    collectionViewLayout:[self flowLayout]];
+        AFPopUpMenuCollectionView *bottomCollectionView = [[AFPopUpMenuCollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:[self flowLayout]];
         bottomCollectionView.showsHorizontalScrollIndicator = [AFPopUpMenuConfiguration defaultConfiguration].showScrollIndicator;
         bottomCollectionView.backgroundColor = [UIColor clearColor];
         bottomCollectionView.contentInset = [AFPopUpMenuConfiguration defaultConfiguration].contentInset;
