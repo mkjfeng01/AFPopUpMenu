@@ -20,12 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
-#import "AFPopUpMenu.h"
-
 #define AF_DEVICE_SCREEN_WIDTH   [UIScreen mainScreen].bounds.size.width
 #define AF_DEVICE_SCREEN_HEIGHT  [UIScreen mainScreen].bounds.size.height
 #define AFPopUpMenuCancelSelectedIndexPath [NSIndexPath indexPathForRow:-1 inSection:-1]
+
+#ifndef AFLocalizedStrings
+#define AFLocalizedStrings(key) \
+NSLocalizedStringFromTableInBundle(key, @"AFPopUpMenuString", [NSBundle bundleWithPath:[[NSBundle bundleForClass:[self class]] resourcePath]], nil)
+#endif
+
+#import <UIKit/UIKit.h>
+#import "AFPopUpMenu.h"
 
 static NSString * const AFPopUpMenuImageCacheDirectory = @"com.af.AFPopUpMenuImageCacheDirectory";
 static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIdentifier";
@@ -80,7 +85,7 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
         self.animationDuration = .3;
         self.menuTitleFont = [UIFont systemFontOfSize:12.f];
         self.menuTitleColor = [UIColor darkGrayColor];
-        self.menuTitleAlignment = NSTextAlignmentCenter;
+        self.menuTitleAlignment = NSTextAlignmentLeft;
         self.showSeparator = YES;
         self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:.3];
         self.separatorColor = [UIColor colorWithRed:210/255.f green:210/255.f blue:210/255.f alpha:1];
