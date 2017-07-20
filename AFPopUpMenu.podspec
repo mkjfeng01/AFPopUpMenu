@@ -32,6 +32,8 @@ TODO: Add long description of the pod here.
 
   s.source_files = 'AFPopUpMenu/Classes/**/*'
 
+  s.resources = 'AFPopUpMenu/Assets/*.bundle'
+
   # s.resource_bundles = {
   #   'AFPopUpMenu' => ['AFPopUpMenu/Assets/*.png']
   # }

@@ -26,20 +26,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AFPopUpMenuConfiguration : NSObject
 
-@property (nonatomic, assign) CGSize itemSize; /* 分组cell的大小 */
-@property (nonatomic, assign) CGFloat margin; /* 标题控件距离屏幕左右边距 */
-@property (nonatomic, assign) CGFloat interval; /* 控件之间上下边距 */
-@property (nonatomic, assign) CGFloat itemMargin; /*  */
+
 @property (nonatomic, assign) CGFloat minimumLineSpacing; /*  */
 @property (nonatomic, assign) CGFloat minimumInteritemSpacing; /*  */
 @property (nonatomic, assign) CGFloat springWithDamping; /* 弹性动画弹性系数 */
 @property (nonatomic, assign) CGFloat springVelocity; /* 弹性动画初始速度 */
-@property (nonatomic, assign) UIEdgeInsets contentInset; /*  */
 
 @property (nonatomic, strong) UIFont *menuTitleFont; /* 菜单标题字体，默认系统字体12号 */
-@property (nonatomic, strong) UIFont *exitTextFont; /* 底部退出按钮字体大小，默认系统字体15号 */
+@property (nonatomic, strong) UIFont *exitTextFont; /* 底部按钮字体大小，默认系统字体15号 */
 @property (nonatomic, strong) UIFont *itemTextFont; /* 分组标题字体，默认系统字体11号 */
 
+@property (nonatomic, strong) UIColor *menuBackgroundColor; /* 背景颜色 */
 @property (nonatomic, strong) UIColor *menuTitleColor; /* 菜单标题字体颜色，默认深灰色(darkGray) */
 @property (nonatomic, strong) UIColor *backgroundColor; /* 菜单整体背景色 */
 @property (nonatomic, strong) UIColor *exitTextColor; /* 底部退出按钮标题颜色，默认深灰色 */
@@ -48,6 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString *exitText; /* 底部退出按钮标题，默认`取消` */
 
+@property (nonatomic, assign) BOOL blurEffectAvailable;
 @property (nonatomic, assign) BOOL showSeparator; /* 是否显示上下分组之间的分割线 */
 @property (nonatomic, assign) BOOL showScrollIndicator; /* 上下分组是否显示每个分组底部的滚动条 */
 @property (nonatomic, assign) BOOL usingSpringAnimation; /* 菜单弹出时时是否使用弹簧动画 */
@@ -66,11 +64,30 @@ typedef void (^AFPopUpMenuHitBlock) (NSString * _Nullable title);
 
 @interface AFPopUpMenu : NSObject
 
+
+/**
+ Show menu without title, menuArray and imageArray
+
+ @param menuArray menuArray
+ @param imageArray imageArray
+ @param doneBlock doneBlock
+ @param dismissBlock dismissBlock
+ */
 + (void)showWithMenuArray:(NSArray *)menuArray
                imageArray:(NSArray *)imageArray
                 doneBlock:(AFPopUpMenuDoneBlock)doneBlock
              dismissBlock:(nullable AFPopUpMenuDismissBlock)dismissBlock;
 
+
+/**
+ Show menu with title, menuArray and imageArray
+
+ @param title title
+ @param menuArray menuArray
+ @param imageArray imageArray
+ @param doneBlock doneBlock
+ @param dismissBlock dismissBlock
+ */
 + (void)showWithTitle:(nullable NSString *)title
             menuArray:(NSArray *)menuArray
            imageArray:(NSArray *)imageArray

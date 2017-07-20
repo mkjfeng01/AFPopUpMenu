@@ -11,9 +11,17 @@
 
 @interface AFViewController ()
 
-@end
+@property (nonatomic, copy) NSString *menuTitle;
 
-@implementation AFViewController
+@property (nonatomic, strong) NSArray *titleArray;
+@property (nonatomic, strong) NSArray *imageArray;
+
+@property (nonatomic, strong) NSArray *singleTitleArray;
+@property (nonatomic, strong) NSArray *singleImageArray;
+@property (nonatomic, strong) NSArray *doubleTitleArray;
+@property (nonatomic, strong) NSArray *doubleImageArray;
+
+@end
 
 ///=============================================================================
 
@@ -27,66 +35,39 @@
 
 ///=============================================================================
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW,
-                                 (int64_t)(.3 * NSEC_PER_SEC)),
-                   dispatch_get_main_queue(), ^{
-                       [tableView deselectRowAtIndexPath:indexPath animated:YES];
-                   });
+@implementation AFViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
     
-    NSString *title = @"请选择你要进行的操作";
-    NSArray *singleTitleArray = @[
-                                  @[@"联系人",@"转发", @"朋友圈", @"收藏", @"QQ空间", @"短信", @"分享到FaceBook", @"分享到Twitter", @"购物车", @"微信读书"]
-                                  ];
-    NSArray *singleImageArray = @[
-                                  @[@"Action_Verified", @"Action_Share", @"Action_Moments", @"Action_MyFavAdd", @"Action_qzone", @"Action_Email", @"Action_facebook",@"Action_Twitter", @"Action_JD_cart", @"Action_WeRead"]
-                                  ];
+    _menuTitle = @"请选择你要进行的操作";
     
-    NSArray *doubleTitleArray = @[
-                                  @[@"联系人",@"转发", @"朋友圈", @"收藏", @"QQ控件", @"短信", @"分享到FaceBook", @"分享到Twitter", @"购物车", @"微信读书"],
-                                  @[@"置顶", @"刷新", @"复制链接", @"调整字体"]
-                                  ];
-    NSArray *doubleImageArray = @[
-                                  @[@"Action_Verified", @"Action_Share", @"Action_Moments", @"Action_MyFavAdd", @"Action_qzone", @"Action_Email", @"Action_facebook",@"Action_Twitter", @"Action_JD_cart", @"Action_WeRead"],
-                                  @[@"Action_BackToChatSession", @"Action_Refresh", @"Action_Copy", @"Action_Font"]
-                                  ];
+    _singleTitleArray = @[
+                          @[@"联系人",@"转发", @"朋友圈", @"收藏", @"QQ空间", @"短信", @"分享到FaceBook", @"分享到Twitter", @"购物车", @"微信读书"]
+                        ];
+    _singleImageArray = @[
+                          @[@"Action_Verified", @"Action_Share", @"Action_Moments", @"Action_MyFavAdd", @"Action_qzone", @"Action_Email", @"Action_facebook",@"Action_Twitter", @"Action_JD_cart", @"Action_WeRead"]
+                        ];
     
-    NSArray *titleArray = doubleTitleArray;
-    NSArray *imageArray = doubleImageArray;
+    _doubleTitleArray = @[
+                          @[@"联系人",@"转发", @"朋友圈", @"收藏", @"QQ控件", @"短信", @"分享到FaceBook", @"分享到Twitter", @"购物车", @"微信读书"],
+                          @[@"置顶", @"刷新", @"复制链接", @"调整字体"]
+                        ];
+    _doubleImageArray = @[
+                          @[@"Action_Verified", @"Action_Share", @"Action_Moments", @"Action_MyFavAdd", @"Action_qzone", @"Action_Email", @"Action_facebook",@"Action_Twitter", @"Action_JD_cart", @"Action_WeRead"],
+                          @[@"Action_BackToChatSession", @"Action_Refresh", @"Action_Copy", @"Action_Font"]
+                        ];
     
-    if (indexPath.section == 0) {
-        [AFPopUpMenuConfiguration defaultConfiguration].usingSpringAnimation = NO;
-        
-        if (indexPath.row == 1) {
-            title = nil;
-        } else if (indexPath.row == 2) {
-            titleArray = singleTitleArray;
-            imageArray = singleImageArray;
-        }
-    } else {
-        [AFPopUpMenuConfiguration defaultConfiguration].usingSpringAnimation = YES;
-        
-        if (indexPath.row == 1) {
-            title = nil;
-        } else if (indexPath.row == 2) {
-            titleArray = singleTitleArray;
-            imageArray = singleImageArray;
-        }
-    }
-    
-    [AFPopUpMenu showWithTitle:title
-                     menuArray:titleArray
-                    imageArray:imageArray
-                     doneBlock:^(NSIndexPath * _Nonnull selectedIndexPath) {
-                         // do something..
-                     }
-                  dismissBlock:^{
-                      // do something..
-                  }];
-    
-    [AFPopUpMenu showWithTitle:title
-                     menuArray:titleArray
-                    imageArray:imageArray
+    _titleArray = _singleTitleArray;
+    _imageArray = _singleImageArray;
+}
+
+#pragma mark - AFPopUpMenu Initial
+
+- (IBAction)alertPopUpMentView:(id)sender {
+    [AFPopUpMenu showWithTitle:_menuTitle
+                     menuArray:_titleArray
+                    imageArray:_imageArray
                      doneBlock:^(NSIndexPath *selectedIndexPath) {
                          NSString *describe = [NSString stringWithFormat:@"Did selected: %zd - %zd", selectedIndexPath.section, selectedIndexPath.row];
                          
@@ -101,6 +82,37 @@
                   dismissBlock:^{
                       NSLog(@"dismiss");
                   }];
+}
+
+#pragma mark - Actions
+
+- (IBAction)showTitleSegmentControlValueChangedAction:(UISwitch *)sender {
+    if (sender.on) {
+        _menuTitle = @"请选择你要进行的操作";
+    } else {
+        _menuTitle = nil;
+    }
+}
+
+- (IBAction)titleAlignmentSegmentControlValueChangedAction:(UISegmentedControl *)sender {
+    [AFPopUpMenuConfiguration defaultConfiguration].menuTitleAlignment = sender.selectedSegmentIndex;
+}
+
+- (IBAction)sectionNumberSegmentControlValueChangedAction:(UISegmentedControl *)sender {
+    switch (sender.selectedSegmentIndex) {
+        case 0:
+            _titleArray = _singleTitleArray;
+            _imageArray = _singleImageArray;
+            break;
+        case 1:
+            _titleArray = _doubleTitleArray;
+            _imageArray = _doubleImageArray;
+            break;
+    }
+}
+
+- (IBAction)animationValueChangedAction:(UISwitch *)sender {
+    [AFPopUpMenuConfiguration defaultConfiguration].usingSpringAnimation = sender.on;
 }
 
 @end

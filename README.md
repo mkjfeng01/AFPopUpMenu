@@ -9,6 +9,10 @@
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
+[![k5bAP.md.png](http://storage1.imgchr.com/k5bAP.md.png)](https://imgchr.com/i/k5bAP)
+
+[![k5qtf.md.png](http://storage1.imgchr.com/k5qtf.md.png)](https://imgchr.com/i/k5qtf)
+
 ## Requirements
 
 ## Installation

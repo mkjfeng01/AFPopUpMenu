@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'E70775DFBD9C63B80018491CBFD94A10'
+               BlueprintIdentifier = '618769876415EAECCDBD324029D00114'
                BlueprintName = 'AFPopUpMenu'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'AFPopUpMenu.framework'>
