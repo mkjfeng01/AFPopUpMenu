@@ -253,6 +253,9 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = mkjfeng01;
 				TargetAttributes = {
+					6003F589195388D20070C39A = {
+						DevelopmentTeam = RJT642S52S;
+					};
 					6003F5AD195388D20070C39A = {
 						LastSwiftMigration = 0830;
 						TestTargetID = 6003F589195388D20070C39A;
@@ -534,6 +537,7 @@
 			baseConfigurationReference = 69ADCEA31DCB212457E52124 /* Pods-AFPopUpMenu_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = RJT642S52S;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AFPopUpMenu/AFPopUpMenu-Prefix.pch";
 				INFOPLIST_FILE = "AFPopUpMenu/AFPopUpMenu-Info.plist";
@@ -549,6 +553,7 @@
 			baseConfigurationReference = D33891F998FA23A048C82EE1 /* Pods-AFPopUpMenu_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = RJT642S52S;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AFPopUpMenu/AFPopUpMenu-Prefix.pch";
 				INFOPLIST_FILE = "AFPopUpMenu/AFPopUpMenu-Info.plist";
