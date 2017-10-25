@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AFPopUpMenu'
-  s.version          = '0.1.0'
+  s.version          = '0.1.4'
   s.summary          = 'Pop up menu view like WeChat and QQ, easy to use. If you like it, star it!'
 
 # This description is used to generate tags and improve search results.
