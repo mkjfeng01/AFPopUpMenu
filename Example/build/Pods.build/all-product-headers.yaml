@@ -1,0 +1,38 @@
+{
+  'version': 0,
+  'case-sensitive': 'false',
+  'roots': [
+    {
+      'type': 'directory',
+      'name': "/Users/zhangfeng/Documents/GitHub/AFPopUpMenu/Example/build/Debug-iphoneos/AFPopUpMenu/AFPopUpMenu.framework/Headers",
+      'contents': [
+        {
+          'type': 'file',
+          'name': "AFPopUpMenu-Swift.h",
+          'external-contents': "/Users/zhangfeng/Documents/GitHub/AFPopUpMenu/Example/build/Debug-iphoneos/AFPopUpMenu/AFPopUpMenu.framework/Headers/AFPopUpMenu-Swift.h"
+        },
+        {
+          'type': 'file',
+          'name': "AFPopUpMenu-umbrella.h",
+          'external-contents': "/Users/zhangfeng/Documents/GitHub/AFPopUpMenu/Example/Pods/Target Support Files/AFPopUpMenu/AFPopUpMenu-umbrella.h"
+        },
+        {
+          'type': 'file',
+          'name': "AFPopUpMenu.h",
+          'external-contents': "/Users/zhangfeng/Documents/GitHub/AFPopUpMenu/AFPopUpMenu/Classes/AFPopUpMenu.h"
+        }
+      ]
+    },
+    {
+      'type': 'directory',
+      'name': "/Users/zhangfeng/Documents/GitHub/AFPopUpMenu/Example/build/Debug-iphoneos/AFPopUpMenu/AFPopUpMenu.framework/Modules",
+      'contents': [
+        {
+          'type': 'file',
+          'name': "module.modulemap",
+          'external-contents': "/Users/zhangfeng/Documents/GitHub/AFPopUpMenu/Example/build/Pods.build/Debug-iphoneos/AFPopUpMenu.build/module.modulemap"
+        }
+      ]
+    }
+  ]
+}

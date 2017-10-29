@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AFPopUpMenu'
-  s.version          = '0.1.4'
-  s.summary          = 'Pop up menu view like WeChat and QQ, easy to use. If you like it, star it!'
+  s.version          = '0.1.5'
+  s.summary          = '类似微信弹出的分享界面小窗口，集成简单只需要一句话就可以，如果喜欢欢迎Star😄'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+类似微信弹出的分享界面小窗口，集成简单只需要一句话就可以，如果喜欢欢迎Star😄。https://github.com/mkjfeng01/AFPopUpMenu
                        DESC
 
   s.homepage         = 'https://github.com/mkjfeng01/AFPopUpMenu'

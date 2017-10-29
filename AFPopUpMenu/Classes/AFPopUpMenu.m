@@ -386,7 +386,7 @@ static NSString * const AFPopUpMenuCellIdentifier = @"com.af.AFPopUpMenuCellIden
     UIView *contentView = self;
     if ([AFPopUpMenuConfiguration defaultConfiguration].blurEffectAvailable) {
         [self addSubview:self.visualEffectView];
-        // FIXME:Use `visualEffectView.contentView` instead of `visualEffectView`.
+        //FIXME:Use `visualEffectView.contentView` instead of `visualEffectView`.
         contentView = self.visualEffectView.contentView;
     }
     
